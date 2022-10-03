@@ -8,11 +8,12 @@ const server = http.createServer(function (req, res) {
   const trimmedPath = path.pathname.replace(/^\/+|\/+$/g, "");
   //get the method
   const method = req.method.toLocaleLowerCase();
-
+  //get the query
+  const queryObject = path.query;
   //respond the the request
   res.end("Hello World\n");
 
-  console.log("Requesting on :", trimmedPath, "and the method is :", method);
+  console.log("Requesting on :", trimmedPath, "and the method is :", method.toUpperCase(),'whit this query parameters', queryObject);
 });
 
 server.listen(3000, function () {
