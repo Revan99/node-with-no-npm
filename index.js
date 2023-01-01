@@ -12,8 +12,15 @@ const server = http.createServer(function (req, res) {
   const queryObject = path.query;
   //respond the the request
   res.end("Hello World\n");
-
-  console.log("Requesting on :", trimmedPath, "and the method is :", method.toUpperCase(),'whit this query parameters', queryObject);
+  //this is my first commit in 1/1/2023
+  console.log(
+    "Requesting on :",
+    trimmedPath,
+    "and the method is :",
+    method.toUpperCase(),
+    "whit this query parameters",
+    queryObject
+  );
 });
 
 server.listen(3000, function () {
