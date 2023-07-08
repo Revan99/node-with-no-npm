@@ -1,10 +1,13 @@
 const http = require("http");
+const https = require("https");
 const { StringDecoder } = require("string_decoder");
 const url = require("url");
 const router = require('./router')
 const config = require('./config')
+const fs = require('fs')
 
-const server = http.createServer(function (req, res) {
+
+const logic = function (req, res) {
   //parse the url
   const path = url.parse(req.url);
   //remove the first and last slashes
@@ -52,11 +55,24 @@ const server = http.createServer(function (req, res) {
     })
   });
 
-})
+}
 
+//starts http server
+const httpServer = http.createServer(logic)
 
+httpServer.listen(config.httpPort, function () {
+  console.log("httpServer is running on port " + config.httpPort);
+});
 
+//starting https server
 
-server.listen(config.httpPort, function () {
-  console.log("server is running on port " + config.port + " in " + config.envName + " mode");
+const httpsServerOptions = {
+  key: fs.readFileSync('./https/key.pem'),
+  cert: fs.readFileSync('./https/cert.pem'),
+}
+
+const httpsServer = https.createServer(httpsServerOptions, logic)
+
+httpsServer.listen(config.httpsPort, function () {
+  console.log("httpServer is running on port " + config.httpsPort);
 });
