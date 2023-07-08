@@ -2,6 +2,7 @@ const http = require("http");
 const { StringDecoder } = require("string_decoder");
 const url = require("url");
 const router = require('./router')
+const config = require('./config')
 
 const server = http.createServer(function (req, res) {
   //parse the url
@@ -19,14 +20,14 @@ const server = http.createServer(function (req, res) {
 
   let buffer = ''
 
-  req.on('data',function(data){
+  req.on('data', function (data) {
     buffer += decoder.write(data)
   })
 
-  req.on('end',function(){
-    
+  req.on('end', function () {
+
     buffer += decoder.end()
-    const chosenHandler = typeof router[trimmedPath] !== undefined ? router[trimmedPath]:router.notFound 
+    const chosenHandler = typeof router[trimmedPath] ? router[trimmedPath] : router.notFound
 
     const data = {
       path,
@@ -34,15 +35,16 @@ const server = http.createServer(function (req, res) {
       method,
       queryObject,
       header,
-      payload:buffer
+      payload: buffer
     }
 
-    chosenHandler(data, function(statusCode, payload){
+    chosenHandler(data, function (statusCode, payload) {
       statusCode = typeof statusCode === 'number' ? statusCode : 200
       payload = typeof payload === 'object' ? payload : {}
 
       const jsonPayload = JSON.stringify(payload)
 
+      res.setHeader('Content-type', 'application/json')
       res.writeHead(statusCode)
       res.end(jsonPayload)
 
@@ -55,6 +57,6 @@ const server = http.createServer(function (req, res) {
 
 
 
-server.listen(3000, function () {
-  console.log("server is running on port 3000");
+server.listen(config.port, function () {
+  console.log("server is running on port " + config.port + " in " + config.envName + " mode");
 });
