@@ -57,6 +57,6 @@ const server = http.createServer(function (req, res) {
 
 
 
-server.listen(config.port, function () {
+server.listen(config.httpPort, function () {
   console.log("server is running on port " + config.port + " in " + config.envName + " mode");
 });
