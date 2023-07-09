@@ -5,6 +5,11 @@ const url = require("url");
 const router = require('./router')
 const config = require('./config')
 const fs = require('fs')
+const _data = require('./lib/data')
+
+_data.delete('test', 'Test', function (err) {
+  console.log(err)
+})
 
 
 const logic = function (req, res) {
