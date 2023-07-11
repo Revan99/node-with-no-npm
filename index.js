@@ -3,14 +3,11 @@ const https = require("https");
 const { StringDecoder } = require("string_decoder");
 const url = require("url");
 const router = require('./router')
-const config = require('./config')
+const config = require('./lib/config')
 const fs = require('fs')
 const _data = require('./lib/data')
-
-_data.delete('test', 'Test', function (err) {
-  console.log(err)
-})
-
+const helpers = require('./lib/helpers')
+const querystring = require('querystring');
 
 const logic = function (req, res) {
   //parse the url
@@ -20,7 +17,7 @@ const logic = function (req, res) {
   //get the method
   const method = req.method.toLocaleLowerCase();
   //get the query
-  const queryObject = path.query;
+  const queryObject = querystring.parse(path.query);
 
   const header = req.header
 
@@ -43,7 +40,7 @@ const logic = function (req, res) {
       method,
       queryObject,
       header,
-      payload: buffer
+      payload: helpers.parseJsonToObject(buffer)
     }
 
     chosenHandler(data, function (statusCode, payload) {
