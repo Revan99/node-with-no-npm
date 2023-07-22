@@ -5,5 +5,6 @@ module.exports = {
     ping: handler.ping,
     notFound: handler.notFound,
     users: handler.users,
-    token: handler.token
+    token: handler.token,
+    checks: handler.checks
 }

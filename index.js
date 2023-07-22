@@ -5,7 +5,6 @@ const url = require("url");
 const router = require('./router')
 const config = require('./lib/config')
 const fs = require('fs')
-const _data = require('./lib/data')
 const helpers = require('./lib/helpers')
 const querystring = require('querystring');
 
@@ -19,7 +18,7 @@ const logic = function (req, res) {
   //get the query
   const queryObject = querystring.parse(path.query);
 
-  const header = req.header
+  const headers = req.headers || {}
 
   const decoder = new StringDecoder('utf-8');
 
@@ -39,7 +38,7 @@ const logic = function (req, res) {
       trimmedPath,
       method,
       queryObject,
-      header,
+      headers,
       payload: helpers.parseJsonToObject(buffer)
     }
 
